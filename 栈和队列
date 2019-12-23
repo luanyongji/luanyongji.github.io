@@ -77,4 +77,143 @@ public class ArrayStack<Item> implements MyStack<Item> {
         };
     }
 }
+##链表实现
+import java.security.spec.DSAPrivateKeySpec;
+import java.util.Iterator;
+import java.util.PriorityQueue;
+
+public class ListStack<Item> implements MyStack<Item> {
+    private Node top=null;
+    private int N=0;
+    private class Node{
+        Item item;
+        Node next;
+    }
+    @Override
+    public MyStack<Item> push(Item item) {
+        Node newTop=new Node();
+        newTop.item=item;
+        newTop.next=top;
+        top=newTop;
+        N++;
+        return this;
+    }
+
+    @Override
+    public Item pop() throws Exception {
+        if(isEmpty()){
+            throw new Exception("Stack is Empty！");
+        }
+        Item item=top.item;
+        top=top.next;
+        N--;
+        return item;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return N==0;
+    }
+
+    @Override
+    public int size() {
+        return N;
+    }
+
+    @Override
+    public Iterator<Item> iterator() {
+        return new Iterator<Item>() {
+            private Node cur=top;
+            @Override
+            public boolean hasNext() {
+                return cur!=null;
+            }
+
+            @Override
+            public Item next() {
+                Item item=cur.item;
+                cur=cur.next;
+                return item;
+            }
+        };
+    }
+}
+###队列
+#链表实现
+public interface MyQueue<Item> extends Iterable<Item> {
+    int size();
+    boolean isEmpty();
+    MyQueue<Item> add(Item item);
+    MyQueue<Item> remove() throws Exception;
+}
+import javax.xml.soap.Node;
+import java.nio.file.NotDirectoryException;
+import java.util.Iterator;
+
+public class ListQueue<Item> implements MyQueue<Item> {
+    private Node first;
+    private Node last;
+    private int N=0;
+    private class Node{
+        Item item;
+        Node next;
+    }
+    @Override
+    public int size() {
+        return N;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return N==0;
+    }
+
+    @Override
+    public MyQueue<Item> add(Item item) {
+        Node newNode=new Node();
+        newNode.item=item;
+        newNode.next=null;
+        if(isEmpty()){
+            last=newNode;
+            first=newNode;
+        }else{
+            last.next=newNode;
+            last=newNode;
+        }
+        N++;
+        return this;
+    }
+
+    @Override
+    public MyQueue<Item> remove() throws Exception {
+        if(isEmpty()){
+            throw new Exception("stack is empty!");
+        }
+        Node node=first;
+        first=first.next;
+        N--;
+        if(isEmpty()){
+            last=null;
+        }
+        return (MyQueue<Item>) node.item;
+    }
+
+    @Override
+    public Iterator<Item> iterator() {
+        return new Iterator<Item>() {
+            ListQueue.Node cur=first;
+            @Override
+            public boolean hasNext() {
+                return cur!=null;
+            }
+
+            @Override
+            public Item next() {
+                Item item= (Item) cur.item;
+                cur=cur.next;
+                return item;
+            }
+        };
+    }
+}
 
